@@ -28,4 +28,8 @@ On top I've added couple of tests, and decided that I already spent enough time 
 But there still a problem, building 50K static pages during a build would take enourmous amount of time, 
 I think that It would be better use Server side rendering together with Redis cache or/and implement a cache layer or server side. 
 
-I meant I can keep processed trailers urls into mongoDb or Redis, with the following algoritm 
+![Diagram](/assets/diagram.drawio.png)
+
+
+
+
