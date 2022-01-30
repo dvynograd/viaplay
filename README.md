@@ -26,7 +26,7 @@ The next step was to improve performance since we have a requirement to handle 1
 
 One of the solutions which are the easiest one is to use Frontend Static Render. During the build script will generate all movies pages and attach trailers as part of the Static HTML page, deploying the final HTML to the CDN server. To do so I used Next.js https://nextjs.org/docs/basic-features/data-fetching/get-server-side-props.  
 
-But there is still a problem, building 50K static pages during a build would take an enormous amount of time, the solution here can be look into building only unexisting pages https://nextjs.org/docs/basic-features/data-fetching/incremental-static-regeneration
+But there is still a problem, building 50K static pages will take an enormous amount of time. To solve I can use Incremental Static Regeneration ISR. https://nextjs.org/docs/basic-features/data-fetching/incremental-static-regeneration
 
 
 or use Server-side rendering together with Redis cache or/and implement a cache layer or server-side. 
