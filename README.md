@@ -16,20 +16,23 @@ yarn jest
 
 ## Solution
 
-First, solve the solution in the simplest way. 
-Create an API GET endpoint http://localhost:3000/api/trailers?resource_url=https://content.viaplay.se/pc-se/film/arrival-2016 
-which first loading movie info from content.viaplay.se and find IMDB ID inside.
-Then let's use an id and get youtube keys from themoviedb, contract URLs and return them back.
+Firstly, I solved it straightforward way. 
 
-The next step is to improve performance to handle tens of thousands of requests per second. Here I decided to use Static rendering, and include data as JSON files into the HTML artifacts, which will give us possibilities to use CDN servers and handle heavy traffic. For the solution, I used Next.js and build-in server-side rendering based on getStaticProps and getStaticPaths. 
+Created an API GET endpoint http://localhost:3000/api/trailers?resource_url=https://content.viaplay.se/pc-se/film/arrival-2016 
+which load json from content.viaplay.se and parsa and find IMDB ID inside.
+After I used an id and get youtube keys from themoviedb, construct URLs and return them back.
 
-On top, I've added a couple of tests and decided that I already spent enough time on this assignment.
+The next step was to improve performance since we have a requirement to handle 10K of requests per second. 
 
-But there is still a problem, building 50K static pages during a build would take an enormous amount of time, the solution here can be look into building only unexisting pages or use Server-side rendering together with Redis cache or/and implement a cache layer or server-side. 
+One of the solutions which are the easiest one is to use Frontend Static Render. During the build script will generate all movies pages and attach trailers as part of the Static HTML page, deploying the final HTML to the CDN server. To do so I used Next.js https://nextjs.org/docs/basic-features/data-fetching/get-server-side-props.  
+
+But there is still a problem, building 50K static pages during a build would take an enormous amount of time, the solution here can be look into building only unexisting pages https://nextjs.org/docs/basic-features/data-fetching/incremental-static-regeneration
+
+
+or use Server-side rendering together with Redis cache or/and implement a cache layer or server-side. 
 
 ![Diagram](/assets/diagram.drawio.png)
 
-There also might be a problem with a first hit, with such huge traffic it might end up with a big queue of concurrent requests receiving the same data, which might overload servers, a solution might be to lock other users while processing the first response, or pre warn database cache before the first start, here we can use a queue with workers to pre-warm it in a reasonable time.
-
+However, this solution also has a drawback. There is potential can be a problem with a cold cache. Huge traffic means tons of concurrent users requesting the same data simultaneously, without cache a server will start executing the script for every request, which in turn might overload and crash the server. The solution there either lock other users requesting the same data while processing the response or pre-warn database cache before the first start.
 
 
